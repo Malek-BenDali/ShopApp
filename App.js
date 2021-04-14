@@ -1,11 +1,13 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {store} from './src/store';
+import {Provider} from 'react-redux';
 
 const App = () => {
   return (
-    <View>
+    <Provider store={store}>
       <Text>Hola</Text>
-    </View>
+    </Provider>
   );
 };
 
