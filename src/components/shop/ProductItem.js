@@ -11,7 +11,7 @@ import {
 import {PrimaryButton} from '../shared';
 import {useNavigation} from '@react-navigation/native';
 
-const ProductItem = ({item}) => {
+const ProductItem = ({item, addToCart}) => {
   const navigation = useNavigation();
   const goToDetails = () =>
     navigation.navigate('ProductDetail', {
@@ -30,7 +30,7 @@ const ProductItem = ({item}) => {
         </View>
         <View style={styles.actions}>
           <PrimaryButton title="go to Details" onPress={goToDetails} />
-          <PrimaryButton title="go to Cart" />
+          <PrimaryButton title="go to Cart" onPress={addToCart} />
         </View>
       </View>
     </Touchable>
@@ -53,10 +53,12 @@ const styles = StyleSheet.create({
     height: '70%',
   },
   title: {
+    fontFamily: 'OpenSans-Bold',
     fontSize: 18,
     marginVertical: 4,
   },
   price: {
+    fontFamily: 'OpenSans-Regular',
     fontSize: 14,
     color: '#888',
   },
