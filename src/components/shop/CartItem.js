@@ -9,10 +9,14 @@ const CartItem = ({item, onRemove}) => {
         <Text style={styles.mainText}>{item.productTitle}</Text>
       </View>
       <View style={styles.itemData}>
-        <Text style={styles.mainText}>{parseFloat(item.total).toFixed(2)}</Text>
-        <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
-          <Ionicons name="md-trash" size={23} color="red" />
-        </TouchableOpacity>
+        <Text style={styles.mainText}>
+          {parseFloat(item.total).toFixed(2)}€
+        </Text>
+        {onRemove && (
+          <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
+            <Ionicons name="md-trash" size={23} color="red" />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

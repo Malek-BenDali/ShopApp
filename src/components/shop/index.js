@@ -1,3 +1,4 @@
 import ProductItem from './ProductItem';
 import CartItem from './CartItem';
-export {ProductItem, CartItem};
+import OrderItem from './OrderItem';
+export {ProductItem, CartItem, OrderItem};

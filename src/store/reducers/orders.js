@@ -1,5 +1,6 @@
 import Order from '../../models/order';
 import {ADD_ORDER} from '../actions/orders';
+import moment from 'moment';
 
 const initialState = {
   orders: [],
@@ -13,7 +14,7 @@ export default (state = initialState, action) => {
         new Date().toString(),
         items,
         amount,
-        new Date(),
+        moment(new Date()).format('MMMM Do YYYY, hh:mm '),
       );
 
       return {

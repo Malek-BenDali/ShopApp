@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../../components/UI/headerButton';
+import {OrderItem} from '../../components/shop';
 
 const OrdersScreen = props => {
   const orders = useSelector(state => state.orders.orders);
@@ -23,7 +24,7 @@ const OrdersScreen = props => {
     <FlatList
       data={orders}
       keyExtractor={item => item.id}
-      renderItem={({item}) => <Text>{item.totalAmount} </Text>}
+      renderItem={({item}) => <OrderItem item={item} />}
     />
   );
 };
