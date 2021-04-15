@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const CartItem = ({onRemove}) => {
+const CartItem = ({item, onRemove}) => {
   return (
     <View style={styles.cartItem}>
       <View style={styles.itemData}>
-        <Text style={styles.quantity}> QTY</Text>
-        <Text style={styles.mainText}> title</Text>
+        <Text style={styles.quantity}>{item.quantity}</Text>
+        <Text style={styles.mainText}>{item.productTitle}</Text>
       </View>
       <View style={styles.itemData}>
-        <Text style={styles.mainText}>$AMT</Text>
+        <Text style={styles.mainText}>{parseFloat(item.total).toFixed(2)}</Text>
         <TouchableOpacity onPress={onRemove} style={styles.deleteButton}>
           <Ionicons name="md-trash" size={23} color="red" />
         </TouchableOpacity>
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   mainText: {
     fontFamily: 'OpenSans-Bold',
     fontSize: 16,
+    marginLeft: 5,
   },
   deleteButton: {
     marginLeft: 20,

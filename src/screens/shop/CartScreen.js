@@ -1,9 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {PrimaryButton} from '../../components/shared';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {colors} from '../../constants';
 import {CartItem} from '../../components/shop';
+import {removeFromCart} from '../../store/actions/cart';
+import {addOrder} from '../../store/actions/orders';
 
 const CartScreen = () => {
   const total = useSelector(state => state.cart.total);
@@ -18,8 +20,11 @@ const CartScreen = () => {
         total: state.cart.items[key].total,
       });
     }
-    return transformedItems;
+
+    return transformedItems.filter(item => item.productId !== 'total');
   });
+
+  const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
@@ -30,9 +35,21 @@ const CartScreen = () => {
           styles={{backgroundColor: colors.secondary}}
           title="Order Now"
           disabled={items.length === 0}
+          onPress={() => dispatch(addOrder(items, total))}
         />
       </View>
-      {/* <FlatList data={items} /> */}
+      <FlatList
+        data={items}
+        keyExtractor={item => item.productId}
+        renderItem={({item}) => (
+          <CartItem
+            item={item}
+            onRemove={() => {
+              dispatch(removeFromCart(item.productId));
+            }}
+          />
+        )}
+      />
     </View>
   );
 };
