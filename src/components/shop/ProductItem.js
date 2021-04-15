@@ -11,7 +11,7 @@ import {
 import {PrimaryButton} from '../shared';
 import {useNavigation} from '@react-navigation/native';
 
-const ProductItem = ({item, addToCard}) => {
+const ProductItem = ({item, addToCard, edit, deleteProduct}) => {
   const navigation = useNavigation();
   const goToDetails = () =>
     navigation.navigate('ProductDetail', {
@@ -21,17 +21,37 @@ const ProductItem = ({item, addToCard}) => {
   const Touchable =
     Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
   return (
-    <Touchable useForeground onPress={goToDetails}>
+    <Touchable useForeground onPress={() => goToDetails()}>
       <View style={styles.product}>
         <Image source={{uri: item.imageUrl}} style={styles.image} />
         <View style={styles.details}>
           <Text style={styles.title}>{item.title} </Text>
           <Text style={styles.price}>{item.price.toFixed(2)}€</Text>
         </View>
-        <View style={styles.actions}>
-          <PrimaryButton title="go to Details" onPress={goToDetails} />
-          <PrimaryButton title="add to Cart" onPress={addToCard} />
-        </View>
+        {addToCard ? (
+          <View style={styles.actions}>
+            <PrimaryButton
+              title="go to Details"
+              onPress={() => goToDetails()}
+            />
+            <PrimaryButton title="add to Cart" onPress={addToCard} />
+          </View>
+        ) : (
+          <View style={styles.actions}>
+            <PrimaryButton
+              title="edit"
+              onPress={() =>
+                navigation.navigate('EditProduct', {productId: item.id})
+              }
+              styles={styles.b}
+            />
+            <PrimaryButton
+              title="Delete"
+              styles={styles.b}
+              onPress={deleteProduct}
+            />
+          </View>
+        )}
       </View>
     </Touchable>
   );
@@ -72,5 +92,8 @@ const styles = StyleSheet.create({
   details: {
     alignItems: 'center',
     height: '15%',
+  },
+  b: {
+    width: '30%',
   },
 });

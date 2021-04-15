@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Platform} from 'react-native';
+import {FlatList, Platform, StatusBar} from 'react-native';
 import {useSelector} from 'react-redux';
 import {ProductItem} from '../../components/shop';
 import {useDispatch} from 'react-redux';
@@ -7,6 +7,7 @@ import * as CartActions from '../../store/actions/cart';
 import {useNavigation} from '@react-navigation/native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../../components/UI/headerButton';
+import {colors} from '../../constants';
 
 const ProductOverViewScreen = props => {
   const products = useSelector(state => state.products.availableProducts);
@@ -35,15 +36,18 @@ const ProductOverViewScreen = props => {
   });
 
   return (
-    <FlatList
-      data={products}
-      renderItem={({item}) => (
-        <ProductItem
-          item={item}
-          addToCard={() => dispatch(CartActions.addToCart(item))}
-        />
-      )}
-    />
+    <>
+      <FlatList
+        data={products}
+        renderItem={({item}) => (
+          <ProductItem
+            item={item}
+            addToCard={() => dispatch(CartActions.addToCart(item))}
+          />
+        )}
+      />
+      <StatusBar backgroundColor={colors.primary} />
+    </>
   );
 };
 

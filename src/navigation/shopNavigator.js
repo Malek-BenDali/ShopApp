@@ -7,6 +7,7 @@ import {
   ProductDetailScreen,
   ProductOverViewScreen,
 } from '../screens/shop';
+import {EditProductScreen, UsersProductsScreen} from '../screens/users';
 import {colors} from '../constants';
 import {Platform} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -43,6 +44,14 @@ const OrdersNavigator = () => (
   </Stack.Navigator>
 );
 
+const AdminNavigator = () => (
+  <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Screen name="UserProduct" component={UsersProductsScreen} />
+    <Stack.Screen name="EditProduct" component={EditProductScreen} />
+    <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+  </Stack.Navigator>
+);
+
 const shopNavigator = () => (
   <NavigationContainer>
     <Drawer.Navigator
@@ -64,6 +73,15 @@ const shopNavigator = () => (
         options={{
           drawerIcon: drawerConfig => (
             <Ionicons name="ios-list" size={23} color={drawerConfig.color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Admin"
+        component={AdminNavigator}
+        options={{
+          drawerIcon: drawerConfig => (
+            <Ionicons name="ios-create" size={23} color={drawerConfig.color} />
           ),
         }}
       />
