@@ -11,7 +11,7 @@ import {
 import {PrimaryButton} from '../shared';
 import {useNavigation} from '@react-navigation/native';
 
-const ProductItem = ({item, addToCart}) => {
+const ProductItem = ({item, addToCard}) => {
   const navigation = useNavigation();
   const goToDetails = () =>
     navigation.navigate('ProductDetail', {
@@ -30,7 +30,7 @@ const ProductItem = ({item, addToCart}) => {
         </View>
         <View style={styles.actions}>
           <PrimaryButton title="go to Details" onPress={goToDetails} />
-          <PrimaryButton title="go to Cart" onPress={addToCart} />
+          <PrimaryButton title="add to Cart" onPress={addToCard} />
         </View>
       </View>
     </Touchable>

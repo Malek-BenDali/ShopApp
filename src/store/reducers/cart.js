@@ -18,14 +18,14 @@ export default (state = initialState, action) => {
           state.items[product.id].quantity + 1,
           productPrice,
           productTitle,
-          state.items[product.id].sum + productPrice,
+          state.items[product.id].total + productPrice,
         );
         return {
           ...state,
           items: {
             ...state.items,
             [product.id]: updatedCartItem,
-            total: state.total + productPrice,
+            total: (state.total += productPrice),
           },
         };
       } else {
@@ -41,6 +41,8 @@ export default (state = initialState, action) => {
           total: state.total + productPrice,
         };
       }
+
+    default:
+      return state;
   }
-  return state;
 };
