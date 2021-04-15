@@ -1,27 +1,91 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import CustomHeaderButton from '../../components/UI/headerButton';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {createProduct, updateProduct} from '../../store/actions/products';
+import {PrimaryButton} from '../../components/shared';
 
-const EditProductScreen = () => {
+const EditProductScreen = ({navigation, route}) => {
+  const productId = route.params?.productId || undefined;
+  const editedProducts = useSelector(state =>
+    state.products.userProducts.find(prod => prod.id == productId),
+  );
+  const [title, setTitle] = useState(editedProducts?.title || '');
+  const [imageUrl, setImageUrl] = useState(editedProducts?.imageUrl || '');
+  const [price, setPrice] = useState(editedProducts?.price.toString() || '');
+  const [description, setDescription] = useState(
+    editedProducts?.description || '',
+  );
+  const dispatch = useDispatch();
+
+  navigation.setOptions({
+    headerTitle: productId ? 'Edit product' : 'Add Product',
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Save"
+          iconName={
+            Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+          }
+          onPress={() => navigation.navigate('EditProduct')}
+        />
+      </HeaderButtons>
+    ),
+  });
+  const handlePress = () => {
+    if (productId)
+      dispatch(
+        updateProduct(
+          productId,
+          title,
+          description,
+          imageUrl,
+          parseFloat(price),
+        ),
+      );
+    else
+      dispatch(updateProduct(title, description, imageUrl, parseFloat(price)));
+  };
+
   return (
     <ScrollView>
       <View style={styles.form}>
         <View style={styles.formControl}>
           <Text style={styles.label}>title</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={text => setTitle(text)}
+          />
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image Url</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={imageUrl}
+            onChangeText={text => setImageUrl(text)}
+          />
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Price</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={price}
+            onChangeText={text => setPrice(text)}
+          />
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Decription</Text>
-          <TextInput style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={text => setDescription(text)}
+          />
         </View>
       </View>
+      <PrimaryButton onPress={() => handlePress()} />
     </ScrollView>
   );
 };
