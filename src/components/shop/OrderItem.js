@@ -14,7 +14,7 @@ const OrderItem = ({item}) => {
         <Text style={styles.date}>{item.date} </Text>
       </View>
       <PrimaryButton
-        title="Show Details"
+        title={showDetail ? 'Hide Details' : 'Show Details'}
         onPress={() => setShowDetail(prevState => !prevState)}
       />
       {showDetail && (
