@@ -20,11 +20,11 @@ export default (state = initialState, action) => {
         userProducts: state.userProducts.filter(prod => prod.id !== pid),
       };
     case CREATE_PRODUCT:
-      const {newtitle, newDescription, newImageUrl, newPrice} = action.payload;
+      const {newTitle, newDescription, newImageUrl, newPrice} = action.payload;
       const newProduct = new Product(
         new Date().toString(),
         'u1',
-        newtitle,
+        newTitle,
         newDescription,
         newImageUrl,
         newPrice,

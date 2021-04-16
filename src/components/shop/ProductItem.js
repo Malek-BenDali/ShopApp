@@ -8,21 +8,22 @@ import {
   Platform,
   TouchableNativeFeedback,
 } from 'react-native';
-import {PrimaryButton} from '../shared';
+import {PrimaryButton, Card} from '../shared';
 import {useNavigation} from '@react-navigation/native';
 
-const ProductItem = ({item, addToCard, edit, deleteProduct}) => {
+const ProductItem = ({item, addToCard, deleteProduct}) => {
   const navigation = useNavigation();
   const goToDetails = () =>
-    navigation.navigate('ProductDetail', {
+    navigation.navigate(addToCard ? 'ProductDetail' : 'EditProduct', {
       productId: item.id,
     });
 
   const Touchable =
     Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
   return (
     <Touchable useForeground onPress={() => goToDetails()}>
-      <View style={styles.product}>
+      <Card styles={styles.product}>
         <Image source={{uri: item.imageUrl}} style={styles.image} />
         <View style={styles.details}>
           <Text style={styles.title}>{item.title} </Text>
@@ -52,7 +53,7 @@ const ProductItem = ({item, addToCard, edit, deleteProduct}) => {
             />
           </View>
         )}
-      </View>
+      </Card>
     </Touchable>
   );
 };
@@ -61,12 +62,8 @@ export default ProductItem;
 
 const styles = StyleSheet.create({
   product: {
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: 'white',
     height: 300,
     margin: 20,
-    overflow: 'hidden',
   },
   image: {
     width: '100%',

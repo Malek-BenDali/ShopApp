@@ -1,2 +1,3 @@
 import PrimaryButton from './PrimaryButton';
-export {PrimaryButton};
+import Card from './Card';
+export {PrimaryButton, Card};

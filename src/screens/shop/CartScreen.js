@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
-import {PrimaryButton} from '../../components/shared';
+import {PrimaryButton, Card} from '../../components/shared';
 import {useSelector, useDispatch} from 'react-redux';
 import {colors} from '../../constants';
 import {CartItem} from '../../components/shop';
@@ -27,7 +27,7 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card styles={styles.summary}>
         <Text style={styles.summaryText}>
           Total : <Text style={styles.amount}>{total.toFixed(2)}€</Text>
         </Text>
@@ -37,7 +37,7 @@ const CartScreen = () => {
           disabled={items.length === 0}
           onPress={() => dispatch(addOrder(items, total))}
         />
-      </View>
+      </Card>
       <FlatList
         data={items}
         keyExtractor={item => item.productId}

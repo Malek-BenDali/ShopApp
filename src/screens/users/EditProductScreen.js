@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../../components/UI/headerButton';
-import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {createProduct, updateProduct} from '../../store/actions/products';
 import {PrimaryButton} from '../../components/shared';
 
@@ -20,21 +20,7 @@ const EditProductScreen = ({navigation, route}) => {
   );
   const dispatch = useDispatch();
 
-  navigation.setOptions({
-    headerTitle: productId ? 'Edit product' : 'Add Product',
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title="Save"
-          iconName={
-            Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
-          }
-          onPress={() => navigation.navigate('EditProduct')}
-        />
-      </HeaderButtons>
-    ),
-  });
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     if (productId)
       dispatch(
         updateProduct(
@@ -46,8 +32,24 @@ const EditProductScreen = ({navigation, route}) => {
         ),
       );
     else
-      dispatch(updateProduct(title, description, imageUrl, parseFloat(price)));
-  };
+      dispatch(createProduct(title, description, imageUrl, parseFloat(price)));
+    navigation.goBack();
+  }, [dispatch, title, productId, description, imageUrl, price]);
+
+  navigation.setOptions({
+    headerTitle: productId ? 'Edit product' : 'Add Product',
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title="Save"
+          iconName={
+            Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+          }
+          onPress={() => handlePress()}
+        />
+      </HeaderButtons>
+    ),
+  });
 
   return (
     <ScrollView>
@@ -85,7 +87,10 @@ const EditProductScreen = ({navigation, route}) => {
           />
         </View>
       </View>
-      <PrimaryButton onPress={() => handlePress()} />
+      <PrimaryButton
+        title={productId ? 'edit' : 'add'}
+        onPress={() => handlePress()}
+      />
     </ScrollView>
   );
 };
