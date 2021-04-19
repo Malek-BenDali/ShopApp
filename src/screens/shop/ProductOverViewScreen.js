@@ -1,18 +1,39 @@
-import React from 'react';
-import {FlatList, Platform, StatusBar} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  FlatList,
+  Platform,
+  StatusBar,
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {ProductItem} from '../../components/shop';
 import {useDispatch} from 'react-redux';
 import * as CartActions from '../../store/actions/cart';
+import * as ProductActions from '../../store/actions/products';
 import {useNavigation} from '@react-navigation/native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../../components/UI/headerButton';
 import {colors} from '../../constants';
 
 const ProductOverViewScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
   const products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const loadedProducts = async () => {
+      setIsLoading(true);
+      await dispatch(ProductActions.fetchPorducts());
+      setIsLoading(false);
+    };
+    loadedProducts();
+    return () => {};
+  }, [dispatch]);
+
   navigation.setOptions({
     headerTitle: 'All Products',
     headerRight: () => (
@@ -35,6 +56,22 @@ const ProductOverViewScreen = props => {
     ),
   });
 
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text> No product available</Text>
+      </View>
+    );
+  }
+
   return (
     <>
       <FlatList
@@ -52,3 +89,7 @@ const ProductOverViewScreen = props => {
 };
 
 export default ProductOverViewScreen;
+
+const styles = StyleSheet.create({
+  centered: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+});
