@@ -24,15 +24,21 @@ const ProductOverViewScreen = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const loadedProducts = async () => {
+    await dispatch(ProductActions.fetchPorducts());
+  };
   useEffect(() => {
-    const loadedProducts = async () => {
-      setIsLoading(true);
-      await dispatch(ProductActions.fetchPorducts());
-      setIsLoading(false);
-    };
-    loadedProducts();
+    setIsLoading(true);
+    loadedProducts().then(() => setIsLoading(false));
     return () => {};
   }, [dispatch]);
+
+  useEffect(() => {
+    navigation.addListener('focus', loadedProducts);
+    return () => {
+      navigation.removeListener('focus', loadedProducts);
+    };
+  }, [loadedProducts]);
 
   navigation.setOptions({
     headerTitle: 'All Products',
@@ -75,6 +81,8 @@ const ProductOverViewScreen = props => {
   return (
     <>
       <FlatList
+        onRefresh={loadedProducts}
+        refreshing={isLoading}
         data={products}
         renderItem={({item}) => (
           <ProductItem

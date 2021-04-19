@@ -40,11 +40,26 @@ export const fetchPorducts = () => {
 };
 
 export const deleteProduct = productId => {
-  return {
-    type: DELETE_PRODUCT,
-    payload: {
-      pid: productId,
-    },
+  return async dispatch => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      await axios.delete(
+        `https://rn-shopapp-ddf7f-default-rtdb.firebaseio.com/products/${productId}.json`,
+        config,
+      );
+      return dispatch({
+        type: DELETE_PRODUCT,
+        payload: {
+          pid: productId,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -89,14 +104,37 @@ export const createProduct = (
   };
 };
 export const updateProduct = (id, title, description, imageUrl, price) => {
-  return {
-    type: UPDATE_PRODUCT,
-    payload: {
-      id,
-      title,
-      description,
-      imageUrl,
-      price,
-    },
+  return async dispatch => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      const body = JSON.stringify({
+        id,
+        title,
+        description,
+        imageUrl,
+        price,
+      });
+      await axios.patch(
+        `https://rn-shopapp-ddf7f-default-rtdb.firebaseio.com/products/${id}.json`,
+        body,
+        config,
+      );
+      return dispatch({
+        type: UPDATE_PRODUCT,
+        payload: {
+          id,
+          title,
+          description,
+          imageUrl,
+          price,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
