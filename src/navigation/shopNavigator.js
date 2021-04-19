@@ -7,7 +7,11 @@ import {
   ProductDetailScreen,
   ProductOverViewScreen,
 } from '../screens/shop';
-import {EditProductScreen, UsersProductsScreen} from '../screens/users';
+import {
+  AuthScreen,
+  EditProductScreen,
+  UsersProductsScreen,
+} from '../screens/users';
 import {colors} from '../constants';
 import {Platform} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -52,40 +56,54 @@ const AdminNavigator = () => (
   </Stack.Navigator>
 );
 
+const AuthNavigator = () => (
+  <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Screen
+      name="AuthScreen"
+      component={AuthScreen}
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
+
+const MainApp = () => (
+  <Drawer.Navigator
+    drawerContentOptions={{
+      activeTintColor: colors.primary,
+    }}>
+    <Drawer.Screen
+      name="Shop"
+      component={ShopStack}
+      options={{
+        drawerIcon: drawerConfig => (
+          <Ionicons name="ios-cart" size={23} color={drawerConfig.color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="Order"
+      component={OrdersNavigator}
+      options={{
+        drawerIcon: drawerConfig => (
+          <Ionicons name="ios-list" size={23} color={drawerConfig.color} />
+        ),
+      }}
+    />
+    <Drawer.Screen
+      name="Admin"
+      component={AdminNavigator}
+      options={{
+        drawerIcon: drawerConfig => (
+          <Ionicons name="ios-create" size={23} color={drawerConfig.color} />
+        ),
+      }}
+    />
+  </Drawer.Navigator>
+);
+
 const shopNavigator = () => (
   <NavigationContainer>
-    <Drawer.Navigator
-      drawerContentOptions={{
-        activeTintColor: colors.primary,
-      }}>
-      <Drawer.Screen
-        name="Shop"
-        component={ShopStack}
-        options={{
-          drawerIcon: drawerConfig => (
-            <Ionicons name="ios-cart" size={23} color={drawerConfig.color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Order"
-        component={OrdersNavigator}
-        options={{
-          drawerIcon: drawerConfig => (
-            <Ionicons name="ios-list" size={23} color={drawerConfig.color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Admin"
-        component={AdminNavigator}
-        options={{
-          drawerIcon: drawerConfig => (
-            <Ionicons name="ios-create" size={23} color={drawerConfig.color} />
-          ),
-        }}
-      />
-    </Drawer.Navigator>
+    <MainApp />
   </NavigationContainer>
 );
 
